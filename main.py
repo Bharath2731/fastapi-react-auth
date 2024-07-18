@@ -9,7 +9,7 @@ import jwt
 app = FastAPI()
 
 # CORS settings
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000","*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 
-sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins=['http://localhost:3000'])
+sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins=['http://localhost:3000',"*"])
 app.mount('/socket.io', socketio.ASGIApp(sio, static_files={'/': './public/'}))
 
 
