@@ -102,8 +102,8 @@ async def login(form_data: LoginForm,response:Response):
             access_token = create_access_token(data=form_data)
             refresh_token = create_refresh_token(data={"sub": user['name']})
              # Set cookies in the response
-            response.set_cookie(key="access_token", value=access_token, httponly=True, max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,secure=True,samesite="None")
-            response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, max_age=REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,secure=True,samesite="None")
+            # response.set_cookie(key="access_token", value=access_token, httponly=True, max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,secure=True,samesite="None")
+            # response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, max_age=REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,secure=True,samesite="None")
             
             return {
                 "access_token": access_token,
