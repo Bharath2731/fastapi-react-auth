@@ -101,10 +101,10 @@ async def login(form_data: LoginForm,response:Response):
         if user['name'] == form_data.name and user['password'] == form_data.password:
             access_token = create_access_token(data=form_data)
             refresh_token = create_refresh_token(data={"sub": user['name']})
+            print('hlo........',access_token,refresh_token)
              # Set cookies in the response
             # response.set_cookie(key="access_token", value=access_token, httponly=True, max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,secure=True,samesite="None")
             # response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, max_age=REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,secure=True,samesite="None")
-            
             return {
                 "access_token": access_token,
                 "refresh_token": refresh_token,
@@ -136,14 +136,17 @@ def verify_token(token: str):
         raise HTTPException(status_code=401, detail="Invalid token")
     
 @app.get('/home')
-async def homeName(request:Request): 
-    decodedValue = verify_token(request.cookies.get('access_token'))
+async def homeName(request:Request):
+    headers = dict(request.headers)
+    decodedValue = verify_token(headers['access_token'])
     print(decodedValue['name'])
     return {"name":decodedValue['name']}
 
 @app.get('/checkauth')
 async def isUserAuthorized(request:Request):
-    decodedValue = verify_token(request.cookies.get('access_token'))
+    headers = dict(request.headers)
+    print(headers)
+    decodedValue = verify_token(headers['access_token'])
     if(decodedValue is not None):
         print(decodedValue)
         return {'message':'user authorized','isauth':True}
